@@ -14,6 +14,13 @@ policy "cis-v1.30" {
   policy "aws-cis-section-2" {
     description = "Azure CIS Section 2"
 
+    view "azure_security_policy_parameters" {
+      description = "GCP Log Metric Filter and Alarm"
+      query "azure_security_policy_parameters" {
+        query = file("policy_assignment_parameters.sql")
+      }
+    }
+
     query "2.1" {
       description = "Azure CIS 2.1 Ensure that Azure Defender is set to On for Servers (Manual)"
       expect_output = true
@@ -147,7 +154,48 @@ policy "cis-v1.30" {
     EOF
     }
 
-//    policies that have not been modified will not be listed in this output
+    query "2.12" {
+      description = "Azure CIS 2.12 Ensure any of the ASC Default policy setting is not set to \"Disabled\" (Manual)"
+      query = <<EOF
+        SELECT *
+        FROM azure_security_policy_parameters
+        WHERE value = 'Disabled';
+    EOF
+    }
+
+    query "2.13" {
+      description = "Azure CIS 2.13 Ensure 'Additional email addresses' is configured with a security contact email (Automated)"
+      //email should be valid so if there is even not valid email it will pass
+      expect_output = true
+      query = <<EOF
+        SELECT subscription_id, id, email
+        FROM azure_security_contacts
+        WHERE email IS NOT NULL
+        AND email != '';
+    EOF
+    }
+
+    query "2.14" {
+      description = "Azure CIS 2.14 Ensure that 'Notify about alerts with the following severity' is set to 'High' (Automated)"
+      expect_output = true
+      query = <<EOF
+        SELECT  subscription_id, id, email
+        FROM azure_security_contacts
+        WHERE email IS NOT NULL
+        AND email != '' AND alert_notifications = 'On';
+    EOF
+    }
+
+    query "2.15" {
+      description = "Azure CIS 2.15 Ensure that 'All users with the following roles' is set to 'Owner' (Automated)"
+      expect_output = true
+      query = <<EOF
+        SELECT  subscription_id, id, email
+        FROM azure_security_contacts
+        WHERE email IS NOT NULL
+        AND email != '' AND alerts_to_admins = 'On';
+    EOF
+    }
   }
 
   policy "aws-cis-section-3" {
