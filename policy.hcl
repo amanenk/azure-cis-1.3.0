@@ -24,13 +24,6 @@ policy "cis-v1.30" {
   policy "aws-cis-section-4" {
     description = "Azure CIS Section 4"
 
-    //    view "azure_security_policy_parameters" {
-    //      description = "GCP Log Metric Filter and Alarm"
-    //      query "azure_security_policy_parameters" {
-    //        query = file("policy_assignment_parameters.sql")
-    //      }
-    //    }
-
     query "4.1.1" {
       description = "Azure CIS 4.1.1 Ensure that 'Auditing' is set to 'On' (Automated)"
       expect_output = true
