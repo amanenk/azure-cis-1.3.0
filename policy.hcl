@@ -17,7 +17,7 @@ policy "cis-v1.30" {
     view "azure_security_policy_parameters" {
       description = "GCP Log Metric Filter and Alarm"
       query "azure_security_policy_parameters" {
-        query = file("policy_assignment_parameters.sql")
+        query = file("queries/policy_assignment_parameters.sql")
       }
     }
 
