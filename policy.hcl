@@ -79,7 +79,7 @@ policy "cis-v1.30" {
     query "8.4" {
       description = "Azure CIS 8.4 Ensure the key vault is recoverable (Automated)"
       query = <<EOF
-      SELECT id, "name",
+      SELECT id, "name", enable_purge_protection
       FROM azure_keyvault_vaults akv
       WHERE enable_soft_delete != TRUE
       OR enable_purge_protection != TRUE;
