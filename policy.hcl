@@ -75,8 +75,8 @@ policy "cis-v1.30" {
       AND protocol = 'Udp'
       AND "access" = 'Allow'
       AND direction = 'Inbound'
-      ((single_port = '22'
-          OR 22 BETWEEN range_start AND range_end) or)
+      AND (single_port = '22'
+          OR 22 BETWEEN range_start AND range_end)
     EOF
     }
 
