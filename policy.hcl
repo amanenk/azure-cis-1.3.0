@@ -6,48 +6,48 @@ policy "cis-v1.30" {
     }
   }
 
-  policy "aws-cis-section-1" {
+  policy "azure-cis-section-1" {
     description = "Azure CIS Section 1"
 
   }
 
-  policy "aws-cis-section-2" {
+  policy "azure-cis-section-2" {
     description = "Azure CIS Section 2"
 
   }
 
-  policy "aws-cis-section-3" {
+  policy "azure-cis-section-3" {
     description = "Azure CIS Section 3"
 
   }
 
-  policy "aws-cis-section-4" {
+  policy "azure-cis-section-4" {
     description = "Azure CIS Section 4"
 
   }
 
-  policy "aws-cis-section-5" {
+  policy "azure-cis-section-5" {
     description = "Azure CIS Section 5"
 
   }
 
-  policy "aws-cis-section-6" {
+  policy "azure-cis-section-6" {
     description = "Azure CIS Section 6"
 
   }
 
-  policy "aws-cis-section-7" {
+  policy "azure-cis-section-7" {
     description = "Azure CIS Section 7"
 
   }
 
-  policy "aws-cis-section-8" {
+  policy "azure-cis-section-8" {
     description = "Azure CIS Section 8"
 
   }
 
 
-  policy "aws-cis-section-9" {
+  policy "azure-cis-section-9" {
     description = "Azure CIS Section 9"
 
     query "9.1" {
@@ -56,7 +56,7 @@ policy "cis-v1.30" {
         SELECT awa.subscription_id,
         awa.id AS app_id, awa."name" AS app_name, awaas.enabled AS auth_enabled
         FROM azure_web_apps awa
-        LEFT JOIN aws_web_app_auth_settings awaas ON
+        LEFT JOIN azure_web_app_auth_settings awaas ON
         awa.cq_id = awaas.app_cq_id
         WHERE awaas.enabled IS NULL
         OR awaas.enabled != TRUE;
