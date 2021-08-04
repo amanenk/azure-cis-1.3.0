@@ -26,7 +26,6 @@ policy "cis-v1.30" {
 
     query "4.1.1" {
       description = "Azure CIS 4.1.1 Ensure that 'Auditing' is set to 'On' (Automated)"
-      expect_output = true
       query = <<EOF
         SELECT s.subscription_id , s.id AS server_id, s."name" AS server_name, assdbap.state AS auditing_state
         FROM azure_sql_servers s
@@ -73,7 +72,7 @@ policy "cis-v1.30" {
 
     query "4.2.2" {
       description = "Azure CIS 4.2.2 Ensure that Vulnerability Assessment (VA) is enabled on a SQL server by setting a Storage Account (Automated)"
-      //experimentally checked and storage_container_path becomes NULL when i disable storage account in assesment policy
+      // experimentally checked and storage_container_path becomes NULL when storage account is disabled in assessment policy
       query = <<EOF
         SELECT s.subscription_id, s.id AS server_id, s."name" AS server_name , a."name" AS assesment_id
         FROM azure_sql_servers s
@@ -145,10 +144,9 @@ policy "cis-v1.30" {
     EOF
     }
 
-    //todo check if parameter exists
+
     query "4.3.3" {
       description = "Azure CIS 4.3.3 Ensure server parameter 'log_checkpoints' is set to 'ON' for PostgreSQL Database Server (Automated)"
-      expect_output = true
       query = <<EOF
         WITH value_check AS( SELECT aps.cq_id, apsc.value
         FROM azure_postgresql_servers aps
@@ -165,7 +163,6 @@ policy "cis-v1.30" {
 
     query "4.3.4" {
       description = "Azure CIS 4.3.4 Ensure server parameter 'log_connections' is set to 'ON' for PostgreSQL Database Server (Automated)"
-      expect_output = true
       query = <<EOF
         WITH value_check AS( SELECT aps.cq_id, apsc.value
         FROM azure_postgresql_servers aps
@@ -182,7 +179,6 @@ policy "cis-v1.30" {
 
     query "4.3.5" {
       description = "Azure CIS 4.3.5 Ensure server parameter 'log_disconnections' is set to 'ON' for PostgreSQL Database Server (Automated)"
-      expect_output = true
       query = <<EOF
         WITH value_check AS( SELECT aps.cq_id, apsc.value
         FROM azure_postgresql_servers aps
@@ -199,7 +195,6 @@ policy "cis-v1.30" {
 
     query "4.3.6" {
       description = "Azure CIS 4.3.6 Ensure server parameter 'connection_throttling' is set to 'ON' for PostgreSQL Database Server (Automated)"
-      expect_output = true
       query = <<EOF
         WITH value_check AS( SELECT aps.cq_id, apsc.value
         FROM azure_postgresql_servers aps
@@ -216,7 +211,6 @@ policy "cis-v1.30" {
 
     query "4.3.7" {
       description = "Azure CIS 4.3.7 Ensure server parameter 'log_retention_days' is greater than 3 days for PostgreSQL Database Server (Automated)"
-      expect_output = true
       query = <<EOF
         WITH value_check AS( SELECT aps.cq_id, apsc.value
         FROM azure_postgresql_servers aps
@@ -233,8 +227,6 @@ policy "cis-v1.30" {
 
     query "4.3.8" {
       description = "Azure CIS 4.3.8 Ensure 'Allow access to Azure services' for PostgreSQL Database Server is disabled (Manual)"
-      expect_output = true
-      //todo it follows the cis but public access can be described in different ways
       query = <<EOF
         SELECT aps.subscription_id, aps.id AS server_id, aps."name" AS server_name, apsfr."name" AS rule_name, apsfr.start_ip_address, apsfr.end_ip_address
         FROM azure_postgresql_servers aps
@@ -248,7 +240,6 @@ policy "cis-v1.30" {
 
     query "4.4" {
       description = "Azure CIS 4.4 Ensure that Azure Active Directory Admin is configured (Automated)"
-      expect_output = true
       query = <<EOF
         WITH ad_admins_count AS( SELECT ass.cq_id, count(*) AS admins_count
         FROM azure_sql_servers ass
@@ -265,7 +256,6 @@ policy "cis-v1.30" {
 
     query "4.5" {
       description = "Azure CIS 4.5 Ensure SQL server's TDE protector is encrypted with Customer-managed key (Automated)"
-      expect_output = true
       query = <<EOF
         SELECT s.subscription_id, s.id AS server_id, s."name" AS server_name, p.kind AS protector_kind
         FROM azure_sql_servers s
