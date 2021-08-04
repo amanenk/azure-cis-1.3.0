@@ -71,13 +71,14 @@ policy "cis-v1.30" {
 
     query "7.4" {
       description = "Azure CIS 7.4 Ensure that only approved extensions are installed (Manual)"
-      //todo we can list machines extensions names to ease manual check
-      query = <<EOF
-      SELECT v.id AS vm_id , v.name AS vm_name, r."name" AS extension_name
-      FROM azure_compute_virtual_machines v
-      JOIN azure_compute_virtual_machine_resources r ON
-      v.cq_id = r.virtual_machine_cq_id
-    EOF
+//      //todo we can list machines extensions names to ease manual check
+//      query = <<EOF
+//      SELECT v.id AS vm_id , v.name AS vm_name, r."name" AS extension_name
+//      FROM azure_compute_virtual_machines v
+//      JOIN azure_compute_virtual_machine_resources r ON
+//      v.cq_id = r.virtual_machine_cq_id
+//    EOF
+      query = file("queries/manual.sql")
     }
 
 
@@ -89,7 +90,7 @@ policy "cis-v1.30" {
 
     query "7.6" {
       description = "Azure CIS 7.6 Ensure that the endpoint protection for all Virtual Machines is installed (Manual)"
-      //todo theoretically we can check if vm has security extensions
+      //todo theoretically we can check if vm has security extensions but user also can have his own security extensions which we can't check
       //      EndpointSecurity || TrendMicroDSA* || Antimalware || EndpointProtection || SCWPAgent || PortalProtectExtension* || FileSecurity*
       query = file("queries/manual.sql")
     }
